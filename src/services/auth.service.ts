@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {User} from '../types/user';
 import axiosClient from './api';
 
 export async function isLoggedIn(): Promise<boolean> {
@@ -56,5 +57,15 @@ export async function signup({
   } catch (error) {
     console.log('🚀 ~ file: auth.service.ts ~ line 7 ~ login ~ error', error);
     return false;
+  }
+}
+
+export async function getUser(): Promise<User | null> {
+  try {
+    const resp = await axiosClient.get('user/profile');
+    return resp.data;
+  } catch (error) {
+    console.log('🚀 ~ file: auth.service.ts ~ line 7 ~ login ~ error', error);
+    return null;
   }
 }
