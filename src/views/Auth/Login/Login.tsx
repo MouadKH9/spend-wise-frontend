@@ -56,6 +56,7 @@ export default function Login({navigation}: Props) {
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}
               keyboardType="email-address"
+              autoCapitalize="none"
               errorMessage={touched.email ? errors.email : ''}
             />
             <Input

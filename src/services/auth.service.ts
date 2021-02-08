@@ -1,4 +1,14 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axiosClient from './api';
+
+export async function isLoggedIn(): Promise<boolean> {
+  const token = await AsyncStorage.getItem('token');
+  console.log(
+    '🚀 ~ file: auth.service.ts ~ line 6 ~ isLoggedIn ~ token',
+    token,
+  );
+  return !!token;
+}
 
 export async function login({
   email,
@@ -9,9 +19,11 @@ export async function login({
 }): Promise<boolean> {
   try {
     const resp = await axiosClient.post('auth/login', {email, password});
-    if (!resp.data || resp.data.error) {
+    console.log('🚀 ~ file: auth.service.ts ~ line 19 ~ resp', resp);
+    if (!resp.data.token || resp.data.error) {
       return false;
     }
+    await AsyncStorage.setItem('token', resp.data.token);
     return true;
   } catch (error) {
     console.log('🚀 ~ file: auth.service.ts ~ line 7 ~ login ~ error', error);

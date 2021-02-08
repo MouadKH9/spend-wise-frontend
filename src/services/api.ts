@@ -9,7 +9,9 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use(async (config) => {
-  if (!config.baseURL?.includes('auth')) {
+  if (!config.url?.includes('auth')) {
+    console.log('Including the token');
+
     const token = await AsyncStorage.getItem('token');
     config.headers.Authorization = `Bearer ${token}`;
   }
