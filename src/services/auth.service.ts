@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {navigate} from '../navigation/RootNavigation';
 import {User} from '../types/user';
 import axiosClient from './api';
 
@@ -68,4 +69,11 @@ export async function getUser(): Promise<User | null> {
     console.log('🚀 ~ file: auth.service.ts ~ line 7 ~ login ~ error', error);
     return null;
   }
+}
+
+export async function logout() {
+  console.log('Loging out');
+
+  await AsyncStorage.removeItem('token');
+  navigate('Login');
 }

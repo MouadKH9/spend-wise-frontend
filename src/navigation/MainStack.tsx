@@ -5,6 +5,7 @@ import Tabs from './Tabs';
 import CheckAuth from '../views/Auth/CheckAuth/CheckAuth';
 import Login from '../views/Auth/Login/Login';
 import Signup from '../views/Auth/Signup/Signup';
+import {navigationRef} from './RootNavigation';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +18,7 @@ export type NavigationProps = {
 
 export default function MainStack() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator
         initialRouteName="CheckAuth"
         screenOptions={{headerShown: false}}>

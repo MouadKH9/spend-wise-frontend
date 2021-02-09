@@ -12,7 +12,6 @@ const AuthContext = React.createContext<User | null>(null);
 export default function Tabs() {
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
-    console.log('🚀 ~ file: Tabs.tsx ~ line 16 ~ useEffect ~ user', user);
     if (!user) {
       const getUserProfile = async () => {
         const newUser = await getUser();
