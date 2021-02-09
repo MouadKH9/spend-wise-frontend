@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
-import {Button, Input} from 'react-native-elements';
+import {Button, Input, Text} from 'react-native-elements';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import Container from '../../../components/Container';
@@ -22,20 +22,28 @@ const loginValidationSchema = yup.object().shape({
 });
 
 export default function Login({navigation}: Props) {
+  const [loading, setLoading] = useState(false);
+  const [incorrect, setIncorrect] = useState(false);
+
   const goSignup = () => {
     navigation.navigate('Signup');
   };
 
   const onLogin = async (email: string, password: string) => {
+    setLoading(true);
     const success = await login({email, password});
-    if (success) Alert.alert('Success!');
-    else Alert.alert('Ehhhh');
+    if (success) {
+      navigation.navigate('Tabs');
+    } else {
+      setIncorrect(true);
+    }
+    setLoading(false);
   };
 
   return (
     <Formik
       validationSchema={loginValidationSchema}
-      initialValues={{email: '', password: ''}}
+      initialValues={{email: 'mouad.khchich@gmail.com', password: '3min3m99'}}
       onSubmit={({email, password}) => onLogin(email, password)}>
       {({
         handleChange,
@@ -70,7 +78,15 @@ export default function Login({navigation}: Props) {
           </View>
 
           <View style={styles.footer}>
-            <Button title="Log In" onPress={handleSubmit} disabled={!isValid} />
+            {incorrect && (
+              <Text style={styles.error}>Incorrect e-mail or password</Text>
+            )}
+            <Button
+              title="Log In"
+              onPress={handleSubmit}
+              disabled={!isValid}
+              loading={loading}
+            />
             <Button
               title="No account? Sign up!"
               type="clear"
@@ -91,7 +107,13 @@ const styles = StyleSheet.create({
     flex: 0.8,
   },
   footer: {
-    flex: 0.1,
+    flex: 0.13,
     paddingHorizontal: 50,
+  },
+  error: {
+    color: 'red',
+    textAlign: 'center',
+    paddingBottom: 10,
+    fontSize: 16,
   },
 });
