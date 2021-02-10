@@ -4,6 +4,7 @@ import {Text, Theme, withTheme} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import Container from '../../components/Container';
 import Switcher from '../../components/Switcher';
+import UserInfo from './UserInfo';
 
 type OwnProps = {
   theme: Theme;
@@ -47,6 +48,7 @@ function Profile({theme}: OwnProps) {
         onChange={(index: number) => setCurrentTab(tabValues[index])}
         style={styles.switcher}
       />
+      <View style={{flex: 0.3}}>{currentTab === 'info' && <UserInfo />}</View>
     </Container>
   );
 }
