@@ -1,10 +1,11 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Text} from 'react-native-elements';
+import Container from '../../components/Container';
 
 export default function Home() {
   return (
-    <View>
-      <Text>This is the home page.</Text>
-    </View>
+    <Container>
+      <Text h3>This is the home page.</Text>
+    </Container>
   );
 }

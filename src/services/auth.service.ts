@@ -38,22 +38,27 @@ export async function signup({
   lastName,
   email,
   password,
+  accountName,
 }: {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
+  accountName: string;
 }): Promise<boolean> {
   try {
-    const resp = await axiosClient.post('auth/login', {
+    const resp = await axiosClient.post('auth/register', {
       firstName,
       lastName,
       email,
       password,
+      accountName,
     });
+    console.log('🚀 ~ file: auth.service.ts ~ line 57 ~ resp', resp);
     if (!resp.data || resp.data.error) {
       return false;
     }
+    await AsyncStorage.setItem('token', resp.data.token);
     return true;
   } catch (error) {
     console.log('🚀 ~ file: auth.service.ts ~ line 7 ~ login ~ error', error);
@@ -72,8 +77,6 @@ export async function getUser(): Promise<User | null> {
 }
 
 export async function logout() {
-  console.log('Loging out');
-
   await AsyncStorage.removeItem('token');
   navigate('Login');
 }
