@@ -7,25 +7,26 @@ import {User} from '../types/user';
 import {getUser} from '../services/auth.service';
 import Profile from '../views/Profile/Profile';
 import Icon from 'react-native-vector-icons/Feather';
+import {Theme, withTheme} from 'react-native-elements';
 
 const Tab = createBottomTabNavigator();
 const AuthContext = React.createContext<User | null>(null);
 
-export default function Tabs() {
-  const [user, setUser] = useState<User | null>(null);
-  useEffect(() => {
-    if (!user) {
-      const getUserProfile = async () => {
-        const newUser = await getUser();
-        setUser(newUser);
-      };
-      getUserProfile();
-    }
-  }, [user]);
+function Tabs({theme}: {theme: Theme}) {
+  const [user, setUser] = useState<User | null>({});
+  // useEffect(() => {
+  //   if (!user) {
+  //     const getUserProfile = async () => {
+  //       const newUser = await getUser();
+  //       setUser(newUser);
+  //     };
+  //     getUserProfile();
+  //   }
+  // }, [user]);
   return (
     <AuthContext.Provider value={user}>
       {user ? (
-        <Tab.Navigator>
+        <Tab.Navigator tabBarOptions={{activeTintColor: theme.colors.primary}}>
           <Tab.Screen
             name="Home"
             component={Home}
@@ -35,7 +36,15 @@ export default function Tabs() {
               ),
             }}
           />
-          <Tab.Screen name="Profile" component={Profile} />
+          <Tab.Screen
+            name="Profile"
+            component={Profile}
+            options={{
+              tabBarIcon: ({color, size}) => (
+                <Icon name="user" color={color} size={size} />
+              ),
+            }}
+          />
         </Tab.Navigator>
       ) : (
         <View style={styles.loadingContainer}>
@@ -49,3 +58,5 @@ export default function Tabs() {
 const styles = StyleSheet.create({
   loadingContainer: {flex: 1, alignItems: 'center', justifyContent: 'center'},
 });
+
+export default withTheme(Tabs);

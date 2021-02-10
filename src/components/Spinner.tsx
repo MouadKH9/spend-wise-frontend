@@ -9,7 +9,7 @@ function Spinner({
 }: {
   theme: Theme;
   color?: string;
-  size?: string;
+  size?: 'small' | 'large';
 }) {
   return (
     <ActivityIndicator
