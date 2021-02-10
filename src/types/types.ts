@@ -13,3 +13,18 @@ export interface Account {
   balance: number;
   isSaving: boolean;
 }
+
+export interface Record {
+  id?: number;
+  title: string;
+  date?: string;
+  account?: string;
+  category?: Category;
+}
+
+export interface Category {
+  id?: string;
+  icon?: string;
+  name: string;
+  type: 1 | -1;
+}

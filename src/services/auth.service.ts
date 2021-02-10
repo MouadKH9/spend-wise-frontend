@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {navigate} from '../navigation/RootNavigation';
-import {User} from '../types/user';
+import {User} from '../types/types';
 import axiosClient from './api';
 
 export async function isLoggedIn(): Promise<boolean> {

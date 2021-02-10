@@ -3,11 +3,12 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../views/Home/Home';
 import {StyleSheet, View} from 'react-native';
 import Spinner from '../components/Spinner';
-import {User} from '../types/user';
+import {User} from '../types/types';
 import {getUser} from '../services/auth.service';
 import Profile from '../views/Profile/Profile';
 import Icon from 'react-native-vector-icons/Feather';
 import {Theme, withTheme} from 'react-native-elements';
+import Activity from '../views/Activity/Activity';
 
 const Tab = createBottomTabNavigator();
 const AuthContext = React.createContext<User | null>(null);
@@ -33,6 +34,15 @@ function Tabs({theme}: {theme: Theme}) {
             options={{
               tabBarIcon: ({color, size}) => (
                 <Icon name="home" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Activity"
+            component={Activity}
+            options={{
+              tabBarIcon: ({color, size}) => (
+                <Icon name="list" color={color} size={size} />
               ),
             }}
           />
