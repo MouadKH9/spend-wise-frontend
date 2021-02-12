@@ -6,15 +6,16 @@ import {Record} from '../types/types';
 type OwnProps = {
   record: Record;
   theme: Theme;
+  showBorder: boolean;
 };
-function Item({record, theme}: OwnProps) {
+function Item({record, theme, showBorder}: OwnProps) {
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingVertical: 10,
-      borderBottomWidth: 0.5,
+      borderTopWidth: showBorder ? 0.3 : 0,
       borderColor: 'gray',
     },
     left: {
@@ -37,15 +38,20 @@ function Item({record, theme}: OwnProps) {
     <View style={styles.container}>
       <View style={styles.left}>
         <Image
-          source={{
-            uri:
-              'https://www.clipartmax.com/png/middle/255-2553169_food-drink-food-logo-black-and-white.png',
-          }}
+          source={
+            record.category?.icon
+              ? {
+                  uri: record.category?.icon,
+                }
+              : require('../assets/img/file.png')
+          }
           style={styles.image}
         />
-        <Text style={styles.name}>Item 1</Text>
+        <Text style={styles.name}>{record.description}</Text>
       </View>
-      <Text style={styles.amount}>- 12 MAD</Text>
+      <Text style={styles.amount}>
+        {record.category?.type > 0 ? '+' : '-'} {record.amount} MAD
+      </Text>
     </View>
   );
 }

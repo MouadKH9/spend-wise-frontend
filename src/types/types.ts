@@ -16,10 +16,11 @@ export interface Account {
 
 export interface Record {
   id?: number;
-  title: string;
+  description: string;
   date?: string;
   account?: string;
   category?: Category;
+  amount: number;
 }
 
 export interface Category {
