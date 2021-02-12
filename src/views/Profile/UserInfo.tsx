@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Text, Theme, withTheme} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Feather';
-import Container from '../../components/Container';
-import Switcher from '../../components/Switcher';
+import {User} from '../../types/types';
 
 type OwnProps = {
   theme: Theme;
+  user: User;
 };
-function UserInfo({theme}: OwnProps) {
+function UserInfo({theme, user}: OwnProps) {
   const styles = StyleSheet.create({
     container: {
       width: '90%',
@@ -27,7 +26,7 @@ function UserInfo({theme}: OwnProps) {
     text: {fontSize: 17},
     label: {fontWeight: '500'},
   });
-  const renderRow = (label: string, value: string) => (
+  const renderRow = (label: string, value?: string) => (
     <View style={styles.row}>
       <Text style={[styles.text, styles.label]}>{label}</Text>
       <Text style={[styles.text]}>{value}</Text>
@@ -35,9 +34,9 @@ function UserInfo({theme}: OwnProps) {
   );
   return (
     <View style={styles.container}>
-      {renderRow('First Name:', 'Mouad')}
-      {renderRow('Last Name:', 'Khchich')}
-      {renderRow('E-mail:', 'mouad.khchich@gmail.com')}
+      {renderRow('First Name:', user.firstName)}
+      {renderRow('Last Name:', user.lastName)}
+      {renderRow('E-mail:', user.email)}
     </View>
   );
 }

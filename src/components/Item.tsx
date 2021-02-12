@@ -22,19 +22,15 @@ function Item({record, theme}: OwnProps) {
       alignItems: 'center',
     },
     image: {
-      width: 40,
-      height: 40,
+      width: 35,
+      height: 35,
       marginRight: 20,
     },
     name: {
-      fontSize: 18,
+      fontSize: 16,
     },
     amount: {
-      fontSize: 18,
-      color:
-        record?.category?.type > 0
-          ? theme.colors?.primary
-          : theme.colors?.error,
+      fontSize: 16,
     },
   });
   return (
@@ -49,7 +45,7 @@ function Item({record, theme}: OwnProps) {
         />
         <Text style={styles.name}>Item 1</Text>
       </View>
-      <Text style={styles.amount}>12MAD</Text>
+      <Text style={styles.amount}>- 12 MAD</Text>
     </View>
   );
 }

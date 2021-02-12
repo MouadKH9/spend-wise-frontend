@@ -69,6 +69,7 @@ export async function signup({
 export async function getUser(): Promise<User | null> {
   try {
     const resp = await axiosClient.get('user/profile');
+    console.log('🚀 ~ file: auth.service.ts ~ line 72 ~ getUser ~ resp', resp);
     return resp.data;
   } catch (error) {
     console.log('🚀 ~ file: auth.service.ts ~ line 7 ~ login ~ error', error);
