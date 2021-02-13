@@ -6,6 +6,7 @@ import CheckAuth from '../views/Auth/CheckAuth/CheckAuth';
 import Login from '../views/Auth/Login/Login';
 import Signup from '../views/Auth/Signup/Signup';
 import {navigationRef} from './RootNavigation';
+import AddRecord from '../views/AddRecord/AddRecord';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ export default function MainStack() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="Tabs" component={Tabs} />
+        <Stack.Screen name="AddRecord" component={AddRecord} />
       </Stack.Navigator>
     </NavigationContainer>
   );

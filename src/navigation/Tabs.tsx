@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import {Theme, withTheme} from 'react-native-elements';
 import Activity from '../views/Activity/Activity';
 import {FloatingAction} from 'react-native-floating-action';
+import {navigate} from './RootNavigation';
 
 const Tab = createBottomTabNavigator();
 export const AuthContext = React.createContext<User | null>(null);
@@ -76,8 +77,8 @@ function Tabs({theme}: {theme: Theme}) {
               vertical: 100,
               horizontal: 20,
             }}
-            onPressItem={(name) => {
-              console.log(`selected button: ${name}`);
+            onPressItem={() => {
+              navigate('AddRecord');
             }}
           />
         </>

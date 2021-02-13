@@ -37,6 +37,7 @@ function Switcher({
       color: '#BDBDBD',
       fontSize: 20,
       textAlign: 'center',
+      textTransform: 'capitalize',
     },
     buttonSelected: {
       backgroundColor: 'white',
