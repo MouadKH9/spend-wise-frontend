@@ -7,13 +7,14 @@ import Container from '../../../components/Container';
 import Header from '../../../components/Header';
 import {NavigationProps} from '../../../navigation/MainStack';
 import {signup} from '../../../services/auth.service';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Feather';
 
 type Props = NavigationProps;
 
 const signupValidationSchema = yup.object().shape({
   firstName: yup.string().required('First name is Required'),
   lastName: yup.string().required('First name is Required'),
-  accountName: yup.string().required('Default account is Required'),
   email: yup
     .string()
     .email('Please enter valid email')
@@ -27,6 +28,9 @@ const signupValidationSchema = yup.object().shape({
 export default function Signup({navigation}: Props) {
   const [loading, setLoading] = useState(false);
   const [incorrect, setIncorrect] = useState(false);
+  const [step, setStep] = useState(0);
+  const [accountName, setAccountName] = useState('');
+  const [accountBalance, setAccountBalance] = useState('');
 
   const goLogin = () => {
     navigation.navigate('Login');
@@ -37,8 +41,14 @@ export default function Signup({navigation}: Props) {
     lastName: string,
     email: string,
     password: string,
-    accountName: string,
   ) => {
+    if (step === 0) {
+      setStep(1);
+      return;
+    }
+    if (!accountName || !accountBalance || isNaN(accountBalance)) {
+      return;
+    }
     setLoading(true);
     const success = await signup({
       firstName,
@@ -46,6 +56,7 @@ export default function Signup({navigation}: Props) {
       email,
       password,
       accountName,
+      accountBalance: Number.parseInt(accountBalance, 10),
     });
     if (success) {
       navigation.navigate('Tabs');
@@ -63,10 +74,9 @@ export default function Signup({navigation}: Props) {
         lastName: 'Doe',
         email: 'john.doe@gmail.com',
         password: '3min3m99',
-        accountName: 'Cash',
       }}
-      onSubmit={({firstName, lastName, email, password, accountName}) =>
-        onSignup(firstName, lastName, email, password, accountName)
+      onSubmit={({firstName, lastName, email, password}) =>
+        onSignup(firstName, lastName, email, password)
       }>
       {({
         handleChange,
@@ -78,47 +88,72 @@ export default function Signup({navigation}: Props) {
         touched,
       }) => (
         <Container>
-          <Header style={styles.header}>Sign Up</Header>
+          <View
+            style={[
+              styles.header,
+              step === 0 ? {justifyContent: 'center'} : {},
+            ]}>
+            {step > 0 && (
+              <TouchableOpacity onPress={() => setStep(step - 1)}>
+                <Icon name="arrow-left" size={30} />
+              </TouchableOpacity>
+            )}
+            <Header>Sign Up</Header>
+            {step > 0 && <View style={{width: 30}} />}
+          </View>
 
           <View style={styles.form}>
-            <Input
-              placeholder="First Name"
-              value={values.firstName}
-              onChangeText={handleChange('firstName')}
-              onBlur={handleBlur('firstName')}
-              errorMessage={touched.firstName ? errors.firstName : ''}
-            />
-            <Input
-              placeholder="Last Name"
-              value={values.lastName}
-              onChangeText={handleChange('lastName')}
-              onBlur={handleBlur('lastName')}
-              errorMessage={touched.lastName ? errors.lastName : ''}
-            />
-            <Input
-              placeholder="E-mail"
-              value={values.email}
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              errorMessage={touched.email ? errors.email : ''}
-            />
-            <Input
-              placeholder="Password"
-              value={values.password}
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              secureTextEntry
-              errorMessage={touched.password ? errors.password : ''}
-            />
-            <Input
-              placeholder="Default Account"
-              value={values.accountName}
-              onChangeText={handleChange('accountName')}
-              onBlur={handleBlur('accountName')}
-              errorMessage={touched.accountName ? errors.accountName : ''}
-            />
+            {step === 0 ? (
+              <>
+                <Input
+                  placeholder="First Name"
+                  value={values.firstName}
+                  onChangeText={handleChange('firstName')}
+                  onBlur={handleBlur('firstName')}
+                  errorMessage={touched.firstName ? errors.firstName : ''}
+                />
+                <Input
+                  placeholder="Last Name"
+                  value={values.lastName}
+                  onChangeText={handleChange('lastName')}
+                  onBlur={handleBlur('lastName')}
+                  errorMessage={touched.lastName ? errors.lastName : ''}
+                />
+                <Input
+                  placeholder="E-mail"
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  errorMessage={touched.email ? errors.email : ''}
+                />
+                <Input
+                  placeholder="Password"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  secureTextEntry
+                  errorMessage={touched.password ? errors.password : ''}
+                />
+              </>
+            ) : (
+              <>
+                <Text style={styles.indicationText}>
+                  You need a default account to finish creating your account
+                </Text>
+                <Input
+                  placeholder="Default Account"
+                  value={accountName}
+                  onChangeText={setAccountName}
+                />
+                <Input
+                  placeholder="Initial balance"
+                  value={accountBalance}
+                  onChangeText={setAccountBalance}
+                />
+              </>
+            )}
           </View>
 
           <View style={styles.footer}>
@@ -126,16 +161,18 @@ export default function Signup({navigation}: Props) {
               <Text style={styles.error}>E-mail already exists!</Text>
             )}
             <Button
-              title="Sign up"
+              title={step === 0 ? 'Continue' : 'Sign up'}
               onPress={handleSubmit}
               disabled={!isValid}
               loading={loading}
             />
-            <Button
-              title="Already have an account? Log In!"
-              type="clear"
-              onPress={goLogin}
-            />
+            {step === 0 && (
+              <Button
+                title="Already have an account? Log In!"
+                type="clear"
+                onPress={goLogin}
+              />
+            )}
           </View>
         </Container>
       )}
@@ -144,7 +181,14 @@ export default function Signup({navigation}: Props) {
 }
 
 const styles = StyleSheet.create({
-  header: {marginTop: 30, flex: 0.1},
+  header: {
+    marginTop: 30,
+    flex: 0.1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
   form: {
     paddingHorizontal: 20,
     marginTop: 10,
@@ -159,5 +203,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingBottom: 10,
     fontSize: 16,
+  },
+  indicationText: {
+    fontSize: 16,
+    marginBottom: 40,
   },
 });

@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Container from '../../components/Container';
 import Switcher from '../../components/Switcher';
 import {AuthContext} from '../../navigation/Tabs';
+import {logout} from '../../services/auth.service';
 import {User} from '../../types/types';
 import UserInfo from './UserInfo';
 
@@ -17,6 +18,10 @@ function Profile({theme}: OwnProps) {
 
   const user = useContext(AuthContext);
 
+  const logOut = () => {
+    logout();
+  };
+
   return (
     <Container style={{backgroundColor: 'white'}}>
       <View style={styles.header}>
@@ -27,7 +32,7 @@ function Profile({theme}: OwnProps) {
           <Text h3 style={styles.headerTitle}>
             Profile
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={logOut}>
             <Text h4 style={styles.headerTitle}>
               <Icon name="log-out" color="white" size={30} />
             </Text>

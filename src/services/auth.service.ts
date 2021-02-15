@@ -39,12 +39,14 @@ export async function signup({
   email,
   password,
   accountName,
+  accountBalance,
 }: {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   accountName: string;
+  accountBalance: number;
 }): Promise<boolean> {
   try {
     const resp = await axiosClient.post('auth/register', {
@@ -53,6 +55,7 @@ export async function signup({
       email,
       password,
       accountName,
+      accountBalance,
     });
     console.log('🚀 ~ file: auth.service.ts ~ line 57 ~ resp', resp);
     if (!resp.data || resp.data.error) {
