@@ -11,6 +11,7 @@ import {Theme, withTheme} from 'react-native-elements';
 import Activity from '../views/Activity/Activity';
 import {FloatingAction} from 'react-native-floating-action';
 import {navigate} from './RootNavigation';
+import ProfileStack from '../views/Profile/ProfileStack';
 
 const Tab = createBottomTabNavigator();
 export const AuthContext = React.createContext<User | null>(null);
@@ -62,7 +63,7 @@ function Tabs({theme}: {theme: Theme}) {
             />
             <Tab.Screen
               name="Profile"
-              component={Profile}
+              component={ProfileStack}
               options={{
                 tabBarIcon: ({color, size}) => (
                   <Icon name="user" color={color} size={size} />

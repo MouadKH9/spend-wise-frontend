@@ -12,6 +12,7 @@ export interface Account {
   name?: string;
   balance: number;
   isSaving: boolean;
+  initialBalance?: number;
 }
 
 export interface Record {

@@ -8,7 +8,7 @@ function ItemLoader() {
       width={400}
       height={200}
       viewBox="0 0 400 200"
-      backgroundColor="#23213"
+      backgroundColor="#1e2c1e3"
       foregroundColor="#ecebeb">
       <Circle cx="30" cy="20" r="20" />
       <Rect x="70" y="10" rx="5" ry="5" width="220" height="15" />

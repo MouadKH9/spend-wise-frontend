@@ -10,6 +10,7 @@ const theme: Partial<Theme> = {
     primary: '#5DB075',
     white: '#fffff',
     grey0: '#999999',
+    warning: '#e74c3c',
   },
 };
 

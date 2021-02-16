@@ -4,6 +4,7 @@ import {Text, Theme, withTheme} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Feather';
 import Container from '../../components/Container';
 import Switcher from '../../components/Switcher';
+import {navigate} from '../../navigation/RootNavigation';
 import {AuthContext} from '../../navigation/Tabs';
 import {logout} from '../../services/auth.service';
 import {User} from '../../types/types';
@@ -26,7 +27,7 @@ function Profile({theme}: OwnProps) {
     <Container style={{backgroundColor: 'white'}}>
       <View style={styles.header}>
         <View style={styles.headerTitles}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigate('Settings')}>
             <Icon name="settings" color="white" size={30} />
           </TouchableOpacity>
           <Text h3 style={styles.headerTitle}>
