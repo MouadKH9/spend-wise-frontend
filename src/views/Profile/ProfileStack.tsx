@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Profile from './Profile';
 import Settings from './Settings';
 import ManageEntity from './ManageEntity/ManageEntity';
+import EditProfile from './EditProfile/EditProfile';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ export default function ProfileStack() {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="ManageEntity" component={ManageEntity} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );
 }

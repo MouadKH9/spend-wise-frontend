@@ -15,7 +15,7 @@ function Settings({theme}: OwnProps) {
     {
       title: 'Edit Profile',
       icon: 'user',
-      navigateTo: 'EditProfile',
+      onPress: () => navigate('EditProfile'),
     },
     {
       title: 'Manage accounts',
@@ -26,11 +26,11 @@ function Settings({theme}: OwnProps) {
           entity: 'account',
         }),
     },
-    {
-      title: 'Manage categories',
-      icon: 'list',
-      navigateTo: 'EditCategories',
-    },
+    // {
+    //   title: 'Manage categories',
+    //   icon: 'list',
+    //   navigateTo: 'EditCategories',
+    // },
   ];
 
   return (

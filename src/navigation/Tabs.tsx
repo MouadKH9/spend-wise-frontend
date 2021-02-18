@@ -14,7 +14,13 @@ import {navigate} from './RootNavigation';
 import ProfileStack from '../views/Profile/ProfileStack';
 
 const Tab = createBottomTabNavigator();
-export const AuthContext = React.createContext<User | null>(null);
+export const AuthContext = React.createContext<{
+  user: User | null;
+  updateUser: () => Promise<void>;
+}>({
+  user: null,
+  updateUser: async () => {},
+});
 
 function Tabs({theme}: {theme: Theme}) {
   const [user, setUser] = useState<User | null>(null);
@@ -27,18 +33,18 @@ function Tabs({theme}: {theme: Theme}) {
       icon: require('../assets/img/edit.png'),
     },
   ];
+  const getUserProfile = async () => {
+    const newUser = await getUser();
+    setUser(newUser);
+  };
   useEffect(() => {
     console.log('🚀 ~ file: Tabs.tsx ~ line 20 ~ useEffect ~ user', user);
     if (!user) {
-      const getUserProfile = async () => {
-        const newUser = await getUser();
-        setUser(newUser);
-      };
       getUserProfile();
     }
   }, [user]);
   return (
-    <AuthContext.Provider value={user}>
+    <AuthContext.Provider value={{user, updateUser: getUserProfile}}>
       {user ? (
         <>
           <Tab.Navigator

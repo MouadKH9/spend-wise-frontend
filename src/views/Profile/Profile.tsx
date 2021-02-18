@@ -17,7 +17,7 @@ const tabValues: ('stats' | 'info')[] = ['stats', 'info'];
 function Profile({theme}: OwnProps) {
   const [currentTab, setCurrentTab] = useState<'stats' | 'info'>('stats');
 
-  const user = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
 
   const logOut = () => {
     logout();

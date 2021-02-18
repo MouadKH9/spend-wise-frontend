@@ -80,6 +80,20 @@ export async function getUser(): Promise<User | null> {
   }
 }
 
+export async function updateProfile(user: {
+  user: Partial<User>;
+}): Promise<User | null> {
+  console.log('🚀 ~ file: auth.service.ts ~ line 84 ~ user', user);
+  try {
+    const resp = await axiosClient.put('user/profile', {...user});
+    console.log('🚀 ~ file: auth.service.ts ~ line 72 ~ getUser ~ resp', resp);
+    return resp.data;
+  } catch (error) {
+    console.log('🚀 ~ file: auth.service.ts ~ line 7 ~ login ~ error', error);
+    return null;
+  }
+}
+
 export async function logout() {
   await AsyncStorage.removeItem('token');
   navigate('Login');
