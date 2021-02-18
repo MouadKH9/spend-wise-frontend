@@ -47,7 +47,9 @@ function Item({record, theme, showBorder}: OwnProps) {
           }
           style={styles.image}
         />
-        <Text style={styles.name}>{record.description}</Text>
+        <Text style={styles.name}>
+          {record.description || record.category?.name}
+        </Text>
       </View>
       <Text style={styles.amount}>
         {record.category?.type > 0 ? '+' : '-'} {record.amount} MAD

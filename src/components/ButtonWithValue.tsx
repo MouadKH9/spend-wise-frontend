@@ -5,7 +5,7 @@ import {ButtonProps, Text, Theme, withTheme} from 'react-native-elements';
 type OwnProps = {
   theme: Theme;
   text: string;
-  value: string;
+  value: string | null;
   onPress: () => void;
 };
 function ButtonWithValue({theme, text, value, onPress}: OwnProps) {
@@ -16,6 +16,8 @@ function ButtonWithValue({theme, text, value, onPress}: OwnProps) {
       backgroundColor: theme.colors?.primary,
       alignItems: 'center',
       flex: 1,
+      minHeight: 60,
+      justifyContent: 'center',
     },
     miniText: {
       fontSize: 14,
@@ -28,7 +30,7 @@ function ButtonWithValue({theme, text, value, onPress}: OwnProps) {
   });
 
   return (
-    <TouchableOpacity style={[styles.button, {flex: 0.46}]} onPress={onPress}>
+    <TouchableOpacity style={[styles.button]} onPress={onPress}>
       <Text style={value ? styles.miniText : styles.text}>{text}</Text>
       {value && <Text style={styles.text}>{value}</Text>}
     </TouchableOpacity>

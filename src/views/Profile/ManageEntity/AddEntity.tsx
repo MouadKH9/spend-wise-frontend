@@ -37,7 +37,7 @@ function AddEntity({
         />
         {entity === 'account' && (
           <>
-            <Text>Balanc</Text>
+            <Text>Balance</Text>
             <Input
               placeholder="Balance"
               value={balance}

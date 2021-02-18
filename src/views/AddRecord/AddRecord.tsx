@@ -1,13 +1,21 @@
-import React, {useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Text, Input, withTheme, Theme} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import VirtualKeyboard from 'react-native-virtual-keyboard';
-import ButtonWithValue from '../../components/ButtonWithValue';
+import RNPickerSelect from 'react-native-picker-select';
 
+import ButtonWithValue from '../../components/ButtonWithValue';
 import Container from '../../components/Container';
 import Switcher from '../../components/Switcher';
+import CategoryPicker, {CategoryDTO} from '../CategoryPicker/CategoryPicker';
+import {Account, Category, Details} from '../../types/types';
+import {getAccounts} from '../../services/accounts.service';
+import DetailsEditor from './DetailsEditor/DetailsEditor';
+import {addRecord} from '../../services/records.service';
+import {navigate} from '../../navigation/RootNavigation';
 
 const recordTypes = ['expense', 'income'];
 
@@ -56,8 +64,10 @@ function AddRecord({theme}: OwnProps) {
       alignItems: 'center',
       padding: 15,
       backgroundColor: '#F6F6F6',
-      marginTop: 30,
+      marginRight: 10,
       borderRadius: 10,
+      minHeight: 60,
+      paddingHorizontal: 30,
     },
     addDetailsText: {
       fontSize: 18,
@@ -66,6 +76,38 @@ function AddRecord({theme}: OwnProps) {
 
   const [recordType, setRecordType] = useState(recordTypes[0]);
   const [amount, setAmount] = useState<number | null>(null);
+  const [showCateogryPicker, setShowCateogryPicker] = useState(false);
+  const [showDetailsEditor, setShowDetailsEditor] = useState(false);
+  const [category, setCategory] = useState<null | CategoryDTO>(null);
+  const [account, setAccount] = useState<null | Account>(null);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [details, setDetails] = useState<Details>({});
+
+  useEffect(() => {
+    refreshAccounts();
+  }, []);
+
+  const refreshAccounts = async () => {
+    const newAccounts = await getAccounts();
+    setAccounts(newAccounts);
+    if (!account && newAccounts[0]) setAccount(newAccounts[0]);
+  };
+
+  const checkDisabled = () => !amount || isNaN(amount) || !account || !category;
+
+  const createRecord = async () => {
+    const {description, date} = details;
+    const resp = await addRecord({
+      description: description as string,
+      date,
+      amount: amount as number,
+      account: account as Account,
+      category: category?.category,
+    });
+    if (resp) {
+      navigate('Activity');
+    }
+  };
 
   return (
     <Container>
@@ -78,7 +120,12 @@ function AddRecord({theme}: OwnProps) {
             Add record
           </Text>
         </View>
-        <Button type="clear" icon={<Icon name="check" size={28} />} />
+        <Button
+          disabled={checkDisabled()}
+          type="clear"
+          icon={<Icon name="check" size={28} />}
+          onPress={createRecord}
+        />
       </View>
       <View style={styles.content}>
         <Text style={styles.labelText}>Record type</Text>
@@ -104,12 +151,41 @@ function AddRecord({theme}: OwnProps) {
             styles.inlineView,
             {justifyContent: 'space-between', marginTop: 20},
           ]}>
-          <ButtonWithValue text="Account" value="Cash" />
-          <ButtonWithValue text="Category" value="Food & Snacks" />
+          <TouchableOpacity
+            style={styles.addDetails}
+            onPress={() => setShowDetailsEditor(true)}>
+            <Text style={styles.addDetailsText}>Add details</Text>
+          </TouchableOpacity>
+          <ButtonWithValue
+            text="Category"
+            value={category?.category?.name || null}
+            onPress={() => setShowCateogryPicker(true)}
+          />
         </View>
-        <TouchableOpacity style={styles.addDetails}>
-          <Text style={styles.addDetailsText}>Add details</Text>
-        </TouchableOpacity>
+        <View
+          style={[
+            styles.inlineView,
+            {justifyContent: 'space-between', marginTop: 20},
+          ]}>
+          <Text style={{fontSize: 16}}>Account</Text>
+          <RNPickerSelect
+            onValueChange={(id: number) => {
+              if (id)
+                setAccount(accounts.find((el) => el.id === id) as Account);
+            }}
+            items={accounts.map((acc) => ({
+              label: acc.name as string,
+              value: acc.id,
+            }))}
+            // value={account}
+            textInputProps={{
+              style: {
+                fontSize: 16,
+              },
+            }}
+            placeholder={{label: 'Select an account'}}
+          />
+        </View>
       </View>
       <View style={styles.keyboardContainer}>
         <VirtualKeyboard
@@ -121,6 +197,25 @@ function AddRecord({theme}: OwnProps) {
           decimal
         />
       </View>
+      <CategoryPicker
+        isVisible={showCateogryPicker}
+        onClose={() => setShowCateogryPicker(false)}
+        onSelect={(cat: CategoryDTO) => {
+          setShowCateogryPicker(false);
+          setCategory(cat);
+        }}
+        type={recordType === recordTypes[0] ? -1 : 1}
+      />
+
+      <DetailsEditor
+        details={details}
+        isVisible={showDetailsEditor}
+        onClose={() => setShowDetailsEditor(false)}
+        onDone={(det: Details) => {
+          setShowDetailsEditor(false);
+          setDetails(det);
+        }}
+      />
     </Container>
   );
 }

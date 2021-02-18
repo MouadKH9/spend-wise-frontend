@@ -19,14 +19,20 @@ export interface Record {
   id?: number;
   description: string;
   date?: string;
-  account?: string;
+  account?: Account;
   category?: Category;
   amount: number;
 }
 
 export interface Category {
-  id?: string;
+  id?: number;
   icon?: string;
-  name: string;
-  type: 1 | -1;
+  name?: string;
+  type?: 1 | -1;
+  parentCategoryId?: number;
+}
+
+export interface Details {
+  date?: string;
+  description?: string;
 }

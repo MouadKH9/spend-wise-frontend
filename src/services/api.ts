@@ -24,7 +24,8 @@ axiosClient.interceptors.response.use(
     return resp;
   },
   (error) => {
-    if (error.response.status === 401) {
+    console.log('🚀 ~ file: api.ts ~ line 27 ~ error', error);
+    if (error.response?.status === 401) {
       logout();
     }
   },
