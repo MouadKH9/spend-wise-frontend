@@ -72,7 +72,11 @@ function Activity() {
         {loading ? (
           <ItemLoader />
         ) : (
-          <FlatList style={{flex: 1}} renderItem={renderItem} data={records} />
+          <FlatList
+            style={{flex: 1}}
+            renderItem={renderItem}
+            data={records.sort((a, b) => b.id - a.id)}
+          />
         )}
       </View>
     </Container>

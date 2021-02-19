@@ -52,15 +52,16 @@ function Profile({theme}: OwnProps) {
           <Text h3>{`${user?.firstName} ${user?.lastName}`}</Text>
         </View>
       </View>
-      <Switcher
+      {/* <Switcher
         firstButton="Statistics"
         secondButton="Info"
         selectedIndex={currentTab === 'stats' ? 0 : 1}
         onChange={(index: number) => setCurrentTab(tabValues[index])}
         style={styles.switcher}
-      />
+      /> */}
       <View style={{flex: 0.3}}>
-        {currentTab === 'info' && <UserInfo user={user as User} />}
+        {/* {currentTab === 'info' && <UserInfo user={user as User} />} */}
+        <UserInfo user={user as User} />
       </View>
     </Container>
   );

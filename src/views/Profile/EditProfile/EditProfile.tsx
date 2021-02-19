@@ -19,7 +19,7 @@ const profileValidationSchema = yup.object().shape({
 
 function EditProfile({navigation}: NavigationProps) {
   const [loading, setLoading] = useState(false);
-  const {updateUser} = useContext(AuthContext);
+  const {updateUser, user} = useContext(AuthContext);
 
   const onUpdate = async ({
     firstName,
@@ -54,8 +54,8 @@ function EditProfile({navigation}: NavigationProps) {
       <Formik
         validationSchema={profileValidationSchema}
         initialValues={{
-          firstName: 'John',
-          lastName: 'Doe',
+          firstName: user.firstName,
+          lastName: user?.lastName,
         }}
         onSubmit={({firstName, lastName}) => onUpdate({firstName, lastName})}>
         {({
